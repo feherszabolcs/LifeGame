@@ -3,7 +3,25 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 #include "debugmalloc.h"
+
+/**
+ * Cross-platform sleep function for C
+ * Code copied from rafaelglikis' github!!
+ */
+void sleep_ms(int milliseconds)
+{
+#ifdef WIN32
+    Sleep(milliseconds);
+#else
+    usleep(milliseconds * 1000)
+#endif
+}
 
 bool validInput(int c)
 {
@@ -14,13 +32,6 @@ bool validInput(int c)
 
 int *readMenu(int *control)
 {
-    // while (scanf("%d", &control) != 1)
-    // {
-    //     printf("Hibas input, szamot adjon meg!\n");
-    //     while (getchar() != '\n')
-    //         ;
-    // };
-    // printf("%d", (scanf("%d", &control) != 1 && !validInput((int)control) == true ? 1 : 0));
     while (scanf("%d", &control) != 1)
     {
 
@@ -43,13 +54,25 @@ int main()
     printf("\n* 9. Kilepes *");
     printf("\n********************************\n\n");
 
-    while (!validInput((int)control))
+    while (!validInput((intptr_t)control))
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         control = readMenu(control);
     }
 
-    printf("%d", control);
+    switch ((intptr_t)control)
+    {
+    case 9:
+        printf("*****Kilepes!*****");
+        sleep_ms(1000);
+        exit(0);
+        break;
+
+    default:
+        printf("Nem jo a valasztas!");
+        break;
+    }
+
     system("pause");
     return 0;
 }
