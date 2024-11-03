@@ -10,12 +10,12 @@
 #endif
 #include "../../debugmalloc.h"
 #include "menu.h"
+#include "../gridloader/gridloader.h"
 
 /**
- * Cross-platform sleep function for C
- * Code copied from rafaelglikis' github!!
+ * Linuxon és Windowson is működű sleep függvény - rafaelglikis' githubjáról merítve az implementációt!
  */
-static void sleep_ms(int milliseconds)
+void sleep_ms(int milliseconds)
 {
 #ifdef WIN32
     Sleep(milliseconds);
@@ -24,6 +24,8 @@ static void sleep_ms(int milliseconds)
 #endif
 }
 
+// Csak a 1, 2, 9-es számokat fogadja el a függvény, ezek esetén lesz valid az input.
+// a vizsgálandó számot paraméterként kapja meg.
 static bool validInput(int c)
 {
     if (c == 1 || c == 2 || c == 9)
@@ -31,6 +33,8 @@ static bool validInput(int c)
     return false;
 }
 
+// a konzolról beolvasott adatot ellenőrzi, hogy szám-e.
+// ha nem szám akkor a fgv újrakéri a felhasználótól a bemenetet.
 static int *readMenu(int *control)
 {
     while (scanf("%d", &control) != 1)
@@ -44,15 +48,17 @@ static int *readMenu(int *control)
     return control;
 }
 
+// A fuggveny felel a menupontok megjelenitesere, ez amit a főprogram is meghív
+// Addig vár a usertől inputot, amíg az nem 1-es, 2-es vagy 9-es. A lehetséges válaszokat a validInput függvény vizsgálja.
 void showMenu()
 {
     int *control = 0;
 
     printf("\n********************************");
-    printf("\n* Eletjatek *");
-    printf("\n* 1. Uj jatekter letrehozasa *");
-    printf("\n* 2. Jatekallas betoltese *");
-    printf("\n* 9. Kilepes *");
+    printf("\n*         Eletjatek            *");
+    printf("\n*  1. Uj jatekter letrehozasa  *");
+    printf("\n*  2. Jatekallas betoltese     *");
+    printf("\n*  9. Kilepes                  *");
     printf("\n********************************\n\n");
 
     while (!validInput((intptr_t)control))
@@ -63,6 +69,9 @@ void showMenu()
 
     switch ((intptr_t)control)
     {
+    case 2:
+        dialogopener();
+        break;
     case 9:
         printf("*****Kilepes!*****");
         sleep_ms(1000);
@@ -73,6 +82,4 @@ void showMenu()
         printf("Nem jo a valasztas!");
         break;
     }
-
-    system("pause");
 }
