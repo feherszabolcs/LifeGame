@@ -1,0 +1,1 @@
+gcc main.c .\components\menu\menu.c .\components\gridloader\gridloader.c .\components\creategrid\create.c

@@ -11,6 +11,7 @@
 #include "../../debugmalloc.h"
 #include "menu.h"
 #include "../gridloader/gridloader.h"
+#include "../creategrid/create.h"
 
 /**
  * Linuxon és Windowson is működű sleep függvény - rafaelglikis' githubjáról merítve az implementációt!
@@ -69,6 +70,9 @@ void showMenu()
 
     switch ((intptr_t)control)
     {
+    case 1:
+        Creator();
+        break;
     case 2:
         dialogopener();
         break;

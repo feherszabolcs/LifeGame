@@ -11,4 +11,6 @@ void dialogopener()
     printf("\n********************************");
 
     sleep_ms(1000);
+
+    system("start \"\" ");
 }
