@@ -26,7 +26,7 @@ void MxTest(char **mx, int sizeX, int sizeY)
         for (int j = 1; j <= sizeY + 2; j++)
         {
             if (i == 1 || j == 1 || i == sizeX + 2 || j == sizeY + 2)
-                printf("*");
+                printf("*"); // A keret kirajzolása
             else
                 printf("%c", mx[i - 1][j - 1]);
         }
@@ -36,10 +36,7 @@ void MxTest(char **mx, int sizeX, int sizeY)
 
 void Creator()
 {
-
     Print();
-    int mxSizeX;
-    int mxSizeY;
     char **mx;
     char input;
 
