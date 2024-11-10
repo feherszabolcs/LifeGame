@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <stdbool.h>
 #include <ctype.h>
 #ifdef _WIN32
@@ -12,6 +13,7 @@
 #include "menu.h"
 #include "../gridloader/gridloader.h"
 #include "../creategrid/create.h"
+#include "../simulation/simulation.h"
 
 /**
  * Linuxon és Windowson is működű sleep függvény - rafaelglikis' githubjáról merítve az implementációt!
@@ -85,5 +87,21 @@ void showMenu()
     default:
         printf("Nem jo a valasztas!");
         break;
+    }
+
+    // printf("\n\nA jatek elkezdesehez nyomjon meg egy billentyut!\n");
+    char exit;
+    while (true)
+    {
+        Run();
+        if (kbhit()) // Kilepes q megnyomasakor
+        {
+            exit = getchar();
+            if (exit == 'q')
+            {
+                printf("Kilepes!");
+                break;
+            }
+        }
     }
 }

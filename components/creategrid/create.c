@@ -37,7 +37,6 @@ void MxTest(char **mx, int sizeX, int sizeY)
 void Creator()
 {
     Print();
-    char **mx;
     char input;
 
     while (scanf("%c", &input) == 1)
@@ -75,7 +74,6 @@ void Creator()
                 }
             }
 
-            MxTest(mx, mxSizeX, mxSizeY);
             break;
 
             // jatek kezdete ----
