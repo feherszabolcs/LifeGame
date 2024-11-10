@@ -32,16 +32,16 @@ void nexState()
             int neighbours = getNeighboursCount(i, j);
 
             char cell = mx[i][j];
-            // a sejt túléli a kört
+            // a sejtes cellák (túléli vagy elpusztul)
             if (cell == 'X')
             {
                 if (neighbours == 2 || neighbours == 3)
                     tmpMx[i][j] = 'X';
+                if (neighbours < 2 || neighbours > 3)
+                    tmpMx[i][j] = '_';
             } // uj sejt szuletik
-            else if (neighbours == 3)
+            else if (cell == '_' && neighbours == 3)
                 tmpMx[i][j] = 'X';
-            else
-                tmpMx[i][j] = '_';
         }
     }
     mx = tmpMx;
