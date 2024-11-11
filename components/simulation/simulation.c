@@ -50,7 +50,8 @@ void nexState()
 void Run()
 {
     system("cls");
-    MxTest(mx, mxSizeX, mxSizeY);
     nexState();
+    MxTest(mx, mxSizeX, mxSizeY);
+    printf("\n\nA jatek befejezesehez nyomjon meg egy billentyut!\n");
     sleep_ms(1000);
 }

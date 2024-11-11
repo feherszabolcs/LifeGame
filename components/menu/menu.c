@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <ctype.h>
 #ifdef _WIN32
 #include <windows.h>
@@ -29,9 +30,14 @@ void sleep_ms(int milliseconds)
 
 // Csak a 1, 2, 9-es számokat fogadja el a függvény, ezek esetén lesz valid az input.
 // a vizsgálandó számot paraméterként kapja meg.
-static bool validInput(int c)
+static bool validInput(int c, bool end)
 {
-    if (c == 1 || c == 2 || c == 9)
+    if (end)
+    {
+        if (c == 1 || c == 9)
+            return true;
+    }
+    else if (c == 1 || c == 2 || c == 9)
         return true;
     return false;
 }
@@ -51,6 +57,60 @@ static int *readMenu(int *control)
     return control;
 }
 
+int saveGrid()
+{
+    FILE *file = fopen("grid.txt", "w");
+    if (file == NULL)
+    {
+        printf("Nem sikerult megnyitni a fajlt!\n");
+        return -1;
+    }
+    for (int i = 0; i <= mxSizeX + 1; i++)
+    {
+        for (int j = 0; j <= mxSizeY + 1; j++)
+        {
+            if (i == 0 || j == 0 || i == mxSizeX + 1 || j == mxSizeY + 1)
+            {
+                fprintf(file, "*"); // A keret kirajzolása
+            }
+            else
+            {
+                fprintf(file, "%c", mx[i][j]);
+            }
+        }
+        fprintf(file, "\n");
+    }
+    fclose(file);
+    return 0;
+}
+// A jatek vegen a matrix fajlba mentése vagy kilepes
+void EndGame()
+{
+    int *input;
+
+    printf("\n********************************");
+    printf("\n*         Jatek vege           *");
+    printf("\n* 1. Jatekallas mentese fajlba *");
+    printf("\n*         9. Kilepes           *");
+    printf("\n********************************\n\n");
+    while (!validInput((intptr_t)input, true))
+    {
+        printf("Valasszon a fenti lehetosegek kozul: ");
+        input = readMenu(input);
+    }
+    if ((intptr_t)input == 1)
+    {
+        int res = saveGrid();
+        if (res != 0) //-1-es visszateres - nem sikerult a mentes
+            printf("\nNem sikerult a mentes!\n");
+        else
+            printf("\nJatekallas mentese fajlba sikeresen.");
+    }
+    printf("*****Kilepes!*****");
+    sleep_ms(500);
+    exit(0);
+}
+
 // A fuggveny felel a menupontok megjelenitesere, ez amit a főprogram is meghív
 // Addig vár a usertől inputot, amíg az nem 1-es, 2-es vagy 9-es. A lehetséges válaszokat a validInput függvény vizsgálja.
 void showMenu()
@@ -64,7 +124,7 @@ void showMenu()
     printf("\n*  9. Kilepes                  *");
     printf("\n********************************\n\n");
 
-    while (!validInput((intptr_t)control))
+    while (!validInput((intptr_t)control, false)) // 2. param false, mert nem a jatek vege eseten vagyunk
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         control = readMenu(control);
@@ -85,23 +145,15 @@ void showMenu()
         break;
 
     default:
-        printf("Nem jo a valasztas!");
+        printf("Nincs ilyen menupont!\n");
+        showMenu();
         break;
     }
 
-    // printf("\n\nA jatek elkezdesehez nyomjon meg egy billentyut!\n");
-    char exit;
-    while (true)
+    // kezdodik a jatek ---
+    while (!kbhit())
     {
         Run();
-        if (kbhit()) // Kilepes q megnyomasakor
-        {
-            exit = getchar();
-            if (exit == 'q')
-            {
-                printf("Kilepes!");
-                break;
-            }
-        }
     }
+    EndGame();
 }
