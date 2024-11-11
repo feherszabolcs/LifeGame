@@ -45,6 +45,7 @@ void nexState()
         }
     }
     mx = tmpMx;
+    free(tmpMx);
 }
 
 void Run()

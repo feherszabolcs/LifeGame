@@ -62,7 +62,6 @@ int saveGrid()
     FILE *file = fopen("grid.txt", "w");
     if (file == NULL)
     {
-        printf("Nem sikerult megnyitni a fajlt!\n");
         return -1;
     }
     for (int i = 0; i <= mxSizeX + 1; i++)
@@ -83,7 +82,7 @@ int saveGrid()
     fclose(file);
     return 0;
 }
-// A jatek vegen a matrix fajlba mentése vagy kilepes
+// A jatek vegen a matrix fajlba mentése vagy kilepo fgv
 void EndGame()
 {
     int *input;
@@ -93,12 +92,14 @@ void EndGame()
     printf("\n* 1. Jatekallas mentese fajlba *");
     printf("\n*         9. Kilepes           *");
     printf("\n********************************\n\n");
-    while (!validInput((intptr_t)input, true))
+
+    while (!validInput((intptr_t)input, true)) // true -> csak 1 vagy 9-es számokat fogad el
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         input = readMenu(input);
     }
-    if ((intptr_t)input == 1)
+
+    if ((intptr_t)input == 1) // mentes grid.txt fajlba
     {
         int res = saveGrid();
         if (res != 0) //-1-es visszateres - nem sikerult a mentes
@@ -106,6 +107,7 @@ void EndGame()
         else
             printf("\nJatekallas mentese fajlba sikeresen.");
     }
+
     printf("*****Kilepes!*****");
     sleep_ms(500);
     exit(0);
@@ -156,4 +158,11 @@ void showMenu()
         Run();
     }
     EndGame();
+
+    // matrix felszabaditasa a vegen
+    for (int i = 0; i < mxSizeY; i++)
+    {
+        free(mx[i]);
+    }
+    free(mx);
 }
