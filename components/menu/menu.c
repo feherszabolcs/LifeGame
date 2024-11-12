@@ -158,11 +158,4 @@ void showMenu()
         Run();
     }
     EndGame();
-
-    // matrix felszabaditasa a vegen
-    for (int i = 0; i < mxSizeY; i++)
-    {
-        free(mx[i]);
-    }
-    free(mx);
 }

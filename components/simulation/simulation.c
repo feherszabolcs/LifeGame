@@ -45,14 +45,13 @@ void nexState()
         }
     }
     mx = tmpMx;
-    free(tmpMx);
 }
 
 void Run()
 {
     system("cls");
-    nexState();
     MxTest(mx, mxSizeX, mxSizeY);
+    nexState();
     printf("\n\nA jatek befejezesehez nyomjon meg egy billentyut!\n");
     sleep_ms(1000);
 }

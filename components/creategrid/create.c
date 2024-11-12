@@ -45,15 +45,37 @@ void FillMatrix()
         char *line = (char *)calloc(mxSizeY + 2, sizeof(char));
         if (line == NULL)
             printf("Nem sikerult lefoglalni a memoriat a jatekternek!\n");
-        printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ , ahol a _ karakter szokozt jelol) es %d oszlopbol alljon!: ", i, mxSizeY);
-        scanf("%s", line);
 
+        bool valid = true;
+        do
+        {
+            valid = true;
+            printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ ) es %d oszlopbol alljon!: ", i, mxSizeY);
+            scanf("%s", line);
+            if (strlen(line) != mxSizeY) // adott szamu Y oszlopbol all
+            {
+                printf("Nem megfelelo formatum!\n");
+                valid = false;
+            }
+            else
+            {
+                for (int i = 0; line[i] != '\0'; i++)
+                {
+                    if (toupper(line[i]) != 'X' && line[i] != '_') // csak X és _ van benne
+                    {
+                        printf("Nem megfelelo formatum!\n");
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        } while (valid == false);
         // VALOS INPUT ELLENORZES (tenyleg x és _)
 
         // printf("%s", line);
         for (int j = 1; j <= mxSizeX + 1; j++)
         {
-            mx[i][j] = line[j - 1];
+            mx[i][j] = toupper(line[j - 1]);
         }
     }
 }
