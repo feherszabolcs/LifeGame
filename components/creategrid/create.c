@@ -38,7 +38,7 @@ void MxTest(char **mx, int sizeX, int sizeY)
     }
 }
 
-void FillMatrix()
+void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
 {
     for (int i = 1; i <= mxSizeX; i++)
     {
@@ -51,7 +51,9 @@ void FillMatrix()
         {
             valid = true;
             printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ ) es %d oszlopbol alljon!: ", i, mxSizeY);
-            scanf("%s", line);
+            // scanf("%s", line);
+            int count = 0;
+
             if (strlen(line) != mxSizeY) // adott szamu Y oszlopbol all
             {
                 printf("Nem megfelelo formatum!\n");
@@ -70,9 +72,7 @@ void FillMatrix()
                 }
             }
         } while (valid == false);
-        // VALOS INPUT ELLENORZES (tenyleg x és _)
 
-        // printf("%s", line);
         for (int j = 1; j <= mxSizeX + 1; j++)
         {
             mx[i][j] = toupper(line[j - 1]);
@@ -113,13 +113,22 @@ void Creator()
 
     if ((intptr_t)input == 1 || (intptr_t)input == 2)
     {
-        printf("Adja meg a jatekter meretet (pl.: 5x4): ");
-        while (scanf("%dx%d", &mxSizeX, &mxSizeY) != 2)
+
+        while (mxSizeX < 1 || mxSizeY < 1)
         {
-            printf("Nem megfelelo formatum! [MERET]x[MERET]: ");
+            printf("Adja meg a jatekter meretet (pl.: 5x4): ");
+            while (scanf("%dx%d", &mxSizeX, &mxSizeY) != 2)
+            {
+                printf("Nem megfelelo formatum! [MERET]x[MERET]: ");
+                while (getchar() != '\n')
+                    ;
+            }
+            mxSizeX < 1 ? printf("A sorok szama nem lehet egynel kisebb!\n") : printf("");
+            mxSizeY < 1 ? printf("Az oszlopok szama nem lehet egynel kisebb!\n") : printf("");
             while (getchar() != '\n')
                 ;
         }
+
         printf("\n* A valasztott meret: %d x %d *\n", mxSizeX, mxSizeY);
         // jatekter lefoglalasa a memoriaban
         mx = (char **)calloc(mxSizeX + 2, sizeof(char *));

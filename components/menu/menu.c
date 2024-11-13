@@ -34,7 +34,7 @@ static bool validInput(int c, bool end)
 {
     if (end)
     {
-        if (c == 1 || c == 9)
+        if (c == 1 || c == 9 || c == 8)
             return true;
     }
     else if (c == 1 || c == 2 || c == 9)
@@ -82,6 +82,15 @@ int saveGrid()
     fclose(file);
     return 0;
 }
+
+void Quit() // Bezaras es kilepes
+{
+    system("cls");
+    printf("*****Kilepes!*****");
+    sleep_ms(500);
+
+    exit(0);
+}
 // A jatek vegen a matrix fajlba mentése vagy kilepo fgv
 void EndGame()
 {
@@ -90,10 +99,11 @@ void EndGame()
     printf("\n********************************");
     printf("\n*         Jatek vege           *");
     printf("\n* 1. Jatekallas mentese fajlba *");
+    printf("\n*      8. Vissza a menube      *");
     printf("\n*         9. Kilepes           *");
     printf("\n********************************\n\n");
 
-    while (!validInput((intptr_t)input, true)) // true -> csak 1 vagy 9-es számokat fogad el
+    while (!validInput((intptr_t)input, true)) // true -> csak 1, 8 vagy 9-es számokat fogad el
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         input = readMenu(input);
@@ -108,14 +118,18 @@ void EndGame()
             printf("\nJatekallas mentese fajlba sikeresen.");
     }
 
-    printf("*****Kilepes!*****");
-    sleep_ms(500);
     for (int i = 0; i < mxSizeX + 2; i++)
     {
         free(mx[i]);
     }
     free(mx);
-    exit(0);
+    mxSizeY = mxSizeX = 0; // felszabaditas es alaphelyzet
+
+    if ((intptr_t)input == 9)
+        Quit();
+
+    showMenu();
+    return;
 }
 
 // A fuggveny felel a menupontok megjelenitesere, ez amit a főprogram is meghív
