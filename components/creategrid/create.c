@@ -42,7 +42,7 @@ void FillMatrix()
 {
     for (int i = 1; i <= mxSizeX; i++)
     {
-        char *line = (char *)calloc(mxSizeY + 2, sizeof(char));
+        char *line = (char *)calloc(mxSizeY + 1, sizeof(char));
         if (line == NULL)
             printf("Nem sikerult lefoglalni a memoriat a jatekternek!\n");
 
@@ -77,6 +77,7 @@ void FillMatrix()
         {
             mx[i][j] = toupper(line[j - 1]);
         }
+        free(line);
     }
 }
 

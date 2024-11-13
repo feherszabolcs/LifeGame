@@ -11,12 +11,6 @@ int main()
 {
     showMenu();
 
-    for (int i = 0; i < mxSizeX; i++)
-    {
-        free(mx[i]);
-    }
-    free(mx);
-
     system("pause");
     return 0;
 }

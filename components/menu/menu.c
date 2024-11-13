@@ -110,6 +110,11 @@ void EndGame()
 
     printf("*****Kilepes!*****");
     sleep_ms(500);
+    for (int i = 0; i < mxSizeX + 2; i++)
+    {
+        free(mx[i]);
+    }
+    free(mx);
     exit(0);
 }
 
