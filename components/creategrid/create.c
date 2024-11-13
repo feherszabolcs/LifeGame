@@ -42,7 +42,8 @@ void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
 {
     for (int i = 1; i <= mxSizeX; i++)
     {
-        char *line = (char *)calloc(mxSizeY + 1, sizeof(char));
+        // char *line = (char *)calloc(mxSizeY + 1, sizeof(char));
+        char line[60];
         if (line == NULL)
             printf("Nem sikerult lefoglalni a memoriat a jatekternek!\n");
 
@@ -51,9 +52,7 @@ void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
         {
             valid = true;
             printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ ) es %d oszlopbol alljon!: ", i, mxSizeY);
-            // scanf("%s", line);
-            int count = 0;
-
+            scanf("%s", line);
             if (strlen(line) != mxSizeY) // adott szamu Y oszlopbol all
             {
                 printf("Nem megfelelo formatum!\n");
@@ -77,7 +76,7 @@ void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
         {
             mx[i][j] = toupper(line[j - 1]);
         }
-        free(line);
+        // free(line);
     }
 }
 
@@ -87,17 +86,6 @@ bool validMenu(int input)
         return true;
     else
         return false;
-}
-
-int *readMenu(int *input)
-{
-    while (scanf("%d", &input) != 1)
-    {
-        printf("Valasszon a fenti lehetosegek kozul: ");
-        while (getchar() != '\n')
-            ;
-    }
-    return input;
 }
 
 void Creator()

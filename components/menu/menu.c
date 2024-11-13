@@ -44,12 +44,12 @@ static bool validInput(int c, bool end)
 
 // a konzolról beolvasott adatot ellenőrzi, hogy szám-e.
 // ha nem szám akkor a fgv újrakéri a felhasználótól a bemenetet.
-static int *readMenu(int *control)
+// int pointerrel tér vissza, ami a beolvasott szám
+int *readMenu(int *control)
 {
     while (scanf("%d", &control) != 1)
     {
 
-        printf("Szamot adjon meg!\n");
         printf("Valasszon a fenti menupontok kozul: ");
         while (getchar() != '\n')
             ;
@@ -85,7 +85,7 @@ int saveGrid()
 
 void Quit() // Bezaras es kilepes
 {
-    system("cls");
+    // system("cls");
     printf("*****Kilepes!*****");
     sleep_ms(500);
 
@@ -111,11 +111,15 @@ void EndGame()
 
     if ((intptr_t)input == 1) // mentes grid.txt fajlba
     {
+        system("cls");
         int res = saveGrid();
         if (res != 0) //-1-es visszateres - nem sikerult a mentes
             printf("\nNem sikerult a mentes!\n");
         else
-            printf("\nJatekallas mentese fajlba sikeresen.");
+        {
+            printf("\nJatekallas mentese a [grid.txt] fajlba sikeresen.\nVisszateres a menube...\n\n");
+            sleep_ms(1000);
+        }
     }
 
     for (int i = 0; i < mxSizeX + 2; i++)
@@ -127,7 +131,7 @@ void EndGame()
 
     if ((intptr_t)input == 9)
         Quit();
-
+    system("cls");
     showMenu();
     return;
 }
