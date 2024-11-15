@@ -7,6 +7,8 @@
 #include <time.h>
 #include <stdbool.h>
 
+Palya palya;
+
 int mxSizeX;
 int mxSizeY;
 char **mx;
@@ -25,20 +27,20 @@ static void Print()
 // matrix allapot kirajzolo fgv
 void MxTest(char **mx, int sizeX, int sizeY)
 {
-    for (int i = 1; i <= sizeX + 2; i++)
+    for (int i = 0; i < sizeX + 2; i++)
     {
-        for (int j = 1; j <= sizeY + 2; j++)
+        for (int j = 0; j < sizeY + 2; j++)
         {
-            if (i == 1 || j == 1 || i == sizeX + 2 || j == sizeY + 2)
+            if (i == 0 || j == 0 || i == sizeX + 1 || j == sizeY + 1)
                 printf("*"); // A keret kirajzolása
             else
-                printf("%c", mx[i - 1][j - 1]);
+                printf("%c", mx[i][j]);
         }
         printf("\n");
     }
 }
 
-void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
+void FillMatrix()
 {
     for (int i = 1; i <= mxSizeX; i++)
     {
@@ -76,7 +78,6 @@ void FillMatrix() // TODO: serult kanari, ha nem megfelelo az input
         {
             mx[i][j] = toupper(line[j - 1]);
         }
-        // free(line);
     }
 }
 
@@ -146,5 +147,6 @@ void Creator()
         // vissza a menube
         system("cls");
         showMenu();
+        return;
     }
 }
