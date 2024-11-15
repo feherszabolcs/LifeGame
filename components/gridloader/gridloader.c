@@ -27,7 +27,7 @@ static int getCols()
     if (fp == NULL)
         return -1;
     char buffer[1000] = {'\0'};
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) // Kod otlete: stackoverflow
     {
         cols = strlen(buffer) - 1;
     }
@@ -36,7 +36,7 @@ static int getCols()
 
 void dialogopener()
 {
-    mxSizeY = mxSizeX = 0;
+    palya.mxSizeY = palya.mxSizeX = 0;
 
     system("cls");
     printf("\n*********************************");
@@ -75,24 +75,24 @@ void dialogopener()
             return;
         }
 
-        mxSizeX = getRows();
-        mxSizeY = getCols();
+        palya.mxSizeX = getRows(); // sorok es oszlopok beállítása a fájl alapján
+        palya.mxSizeY = getCols();
 
-        if (mxSizeX == -1 || mxSizeY == -1)
+        if (palya.mxSizeX == -1 || palya.mxSizeY == -1)
         {
-            printf("Hiba tortent!\n");
+            printf("Hiba tortent: Nem sikerült beállítani a sor és/vagy oszlopszámot!\n");
             return;
         }
 
-        mx = (char **)calloc(mxSizeX + 2, sizeof(char *));
-        for (int i = 0; i < mxSizeX + 2; i++)
-            mx[i] = (char *)calloc(mxSizeY + 3, sizeof(char));
+        palya.mx = (char **)calloc(palya.mxSizeX + 2, sizeof(char *));
+        for (int i = 0; i < palya.mxSizeX + 2; i++)
+            palya.mx[i] = (char *)calloc(palya.mxSizeY + 3, sizeof(char));
 
-        for (int i = 0; i < mxSizeX + 3; i++)
+        for (int i = 0; i < palya.mxSizeX + 3; i++)
         {
-            for (int j = 0; j < mxSizeY + 3; j++)
+            for (int j = 0; j < palya.mxSizeY + 3; j++)
             {
-                if (fscanf(file, "%c", &mx[i][j]) != 1)
+                if (fscanf(file, "%c", &palya.mx[i][j]) != 1)
                 {
                     fprintf(stderr, "hibas input: mx[%d][%d]\n", i, j);
                 }
@@ -100,7 +100,7 @@ void dialogopener()
         }
 
         printf("\nA fajl sikeresen betoltotta a jatekteret!\n");
-        MxTest(mx, mxSizeX, mxSizeY);
+        MxTest();
         fclose(file);
     }
 

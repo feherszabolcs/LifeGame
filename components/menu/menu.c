@@ -64,17 +64,17 @@ int saveGrid()
     {
         return -1;
     }
-    for (int i = 0; i <= mxSizeX + 1; i++)
+    for (int i = 0; i <= palya.mxSizeX + 1; i++)
     {
-        for (int j = 0; j <= mxSizeY + 1; j++)
+        for (int j = 0; j <= palya.mxSizeY + 1; j++)
         {
-            if (i == 0 || j == 0 || i == mxSizeX + 1 || j == mxSizeY + 1)
+            if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
             {
                 fprintf(file, "*"); // A keret kirajzolása
             }
             else
             {
-                fprintf(file, "%c", mx[i][j]);
+                fprintf(file, "%c", palya.mx[i][j]);
             }
         }
         fprintf(file, "\n");
@@ -85,7 +85,6 @@ int saveGrid()
 
 void Quit() // Bezaras es kilepes
 {
-    // system("cls");
     printf("*****Kilepes!*****");
     sleep_ms(500);
 
@@ -122,12 +121,12 @@ void EndGame()
         }
     }
 
-    for (int i = 0; i < mxSizeX + 2; i++)
+    for (int i = 0; i < palya.mxSizeX + 2; i++)
     {
-        free(mx[i]);
+        free(palya.mx[i]);
     }
-    free(mx);
-    mxSizeY = mxSizeX = 0; // felszabaditas es alaphelyzet
+    free(palya.mx);
+    palya.mxSizeY = palya.mxSizeX = 0; // felszabaditas es alaphelyzet
 
     if ((intptr_t)input == 9)
         Quit();

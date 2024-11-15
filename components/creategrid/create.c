@@ -7,11 +7,11 @@
 #include <time.h>
 #include <stdbool.h>
 
-Palya palya;
+Palya palya = {0, 0, NULL};
 
-int mxSizeX;
-int mxSizeY;
-char **mx;
+// int mxSizeX;
+// int mxSizeY;
+// char **mx;
 
 static void Print()
 {
@@ -25,16 +25,16 @@ static void Print()
 }
 
 // matrix allapot kirajzolo fgv
-void MxTest(char **mx, int sizeX, int sizeY)
+void MxTest()
 {
-    for (int i = 0; i < sizeX + 2; i++)
+    for (int i = 0; i < palya.mxSizeX + 2; i++)
     {
-        for (int j = 0; j < sizeY + 2; j++)
+        for (int j = 0; j < palya.mxSizeY + 2; j++)
         {
-            if (i == 0 || j == 0 || i == sizeX + 1 || j == sizeY + 1)
+            if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
                 printf("*"); // A keret kirajzolása
             else
-                printf("%c", mx[i][j]);
+                printf("%c", palya.mx[i][j]);
         }
         printf("\n");
     }
@@ -42,7 +42,7 @@ void MxTest(char **mx, int sizeX, int sizeY)
 
 void FillMatrix()
 {
-    for (int i = 1; i <= mxSizeX; i++)
+    for (int i = 1; i <= palya.mxSizeX; i++)
     {
         // char *line = (char *)calloc(mxSizeY + 1, sizeof(char));
         char line[60];
@@ -53,9 +53,9 @@ void FillMatrix()
         do
         {
             valid = true;
-            printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ ) es %d oszlopbol alljon!: ", i, mxSizeY);
+            printf("Adja meg a %d. sorban az eletallapotokat (pl.: __X_ ) es %d oszlopbol alljon!: ", i, palya.mxSizeY);
             scanf("%s", line);
-            if (strlen(line) != mxSizeY) // adott szamu Y oszlopbol all
+            if (strlen(line) != palya.mxSizeY) // adott szamu Y oszlopbol all
             {
                 printf("Nem megfelelo formatum!\n");
                 valid = false;
@@ -74,9 +74,9 @@ void FillMatrix()
             }
         } while (valid == false);
 
-        for (int j = 1; j <= mxSizeX + 1; j++)
+        for (int j = 1; j <= palya.mxSizeX + 1; j++)
         {
-            mx[i][j] = toupper(line[j - 1]);
+            palya.mx[i][j] = toupper(line[j - 1]);
         }
     }
 }
@@ -103,26 +103,26 @@ void Creator()
     if ((intptr_t)input == 1 || (intptr_t)input == 2)
     {
 
-        while (mxSizeX < 1 || mxSizeY < 1)
+        while (palya.mxSizeX < 1 || palya.mxSizeY < 1)
         {
             printf("Adja meg a jatekter meretet (pl.: 5x4): ");
-            while (scanf("%dx%d", &mxSizeX, &mxSizeY) != 2)
+            while (scanf("%dx%d", &palya.mxSizeX, &palya.mxSizeY) != 2)
             {
                 printf("Nem megfelelo formatum! [MERET]x[MERET]: ");
                 while (getchar() != '\n')
                     ;
             }
-            mxSizeX < 1 ? printf("A sorok szama nem lehet egynel kisebb!\n") : printf("");
-            mxSizeY < 1 ? printf("Az oszlopok szama nem lehet egynel kisebb!\n") : printf("");
+            palya.mxSizeX < 1 ? printf("A sorok szama nem lehet egynel kisebb!\n") : printf("");
+            palya.mxSizeY < 1 ? printf("Az oszlopok szama nem lehet egynel kisebb!\n") : printf("");
             while (getchar() != '\n')
                 ;
         }
 
-        printf("\n* A valasztott meret: %d x %d *\n", mxSizeX, mxSizeY);
+        printf("\n* A valasztott meret: %d x %d *\n", palya.mxSizeX, palya.mxSizeY);
         // jatekter lefoglalasa a memoriaban
-        mx = (char **)calloc(mxSizeX + 2, sizeof(char *));
-        for (int i = 0; i < mxSizeX + 2; i++)
-            mx[i] = (char *)calloc(mxSizeY + 2, sizeof(char));
+        palya.mx = (char **)calloc(palya.mxSizeX + 2, sizeof(char *));
+        for (int i = 0; i < palya.mxSizeX + 2; i++)
+            palya.mx[i] = (char *)calloc(palya.mxSizeY + 2, sizeof(char));
         sleep_ms(1000);
     }
     // user altal bevitt adatbol generalas
@@ -133,12 +133,12 @@ void Creator()
     // jatekter random generalasa
     if ((intptr_t)input == 2)
     {
-        for (int i = 1; i <= mxSizeX; i++)
+        for (int i = 1; i <= palya.mxSizeX; i++)
         {
-            for (int j = 1; j <= mxSizeY; j++)
+            for (int j = 1; j <= palya.mxSizeY; j++)
             {
                 int r = rand() % 2;
-                mx[i][j] = r == 0 ? '_' : 'X';
+                palya.mx[i][j] = r == 0 ? '_' : 'X';
             }
         }
     }
