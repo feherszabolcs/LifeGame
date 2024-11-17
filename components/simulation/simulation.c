@@ -12,6 +12,8 @@ int getNeighboursCount(int x, int y)
     {
         for (int j = -1; j <= 1; j++)
         {
+            if (j == 0 && i == 0)
+                continue;
             if (palya.mx[x + i][y + j] == 'X')
                 count++;
         }

@@ -44,10 +44,7 @@ void FillMatrix()
 {
     for (int i = 1; i <= palya.mxSizeX; i++)
     {
-        // char *line = (char *)calloc(mxSizeY + 1, sizeof(char));
         char line[60];
-        if (line == NULL)
-            printf("Nem sikerult lefoglalni a memoriat a jatekternek!\n");
 
         bool valid = true;
         do

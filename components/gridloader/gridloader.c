@@ -7,26 +7,26 @@
 #include "../creategrid/create.h"
 #include "../menu/menu.h"
 
-static int getRows()
+static int getRows(char filename[])
 {
     int rows = 0;
-    FILE *fp = fopen("grid.txt", "r");
+    FILE *fp = fopen(filename, "r");
     if (fp == NULL)
         return -1;
-    char buffer[1000] = {'\0'};
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    char buffer[100] = {'\0'};
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) // ciklusfeltetel otlete: stackoverflow
     {
         rows++;
     }
     return rows - 2; // = MxSizeX
 }
-static int getCols()
+static int getCols(char filename[])
 {
     int cols = 0;
-    FILE *fp = fopen("grid.txt", "r");
+    FILE *fp = fopen(filename, "r");
     if (fp == NULL)
         return -1;
-    char buffer[1000] = {'\0'};
+    char buffer[100] = {'\0'};
     while (fgets(buffer, sizeof(buffer), fp) != NULL) // Kod otlete: stackoverflow
     {
         cols = strlen(buffer) - 1;
@@ -75,8 +75,8 @@ void dialogopener()
             return;
         }
 
-        palya.mxSizeX = getRows(); // sorok es oszlopok beállítása a fájl alapján
-        palya.mxSizeY = getCols();
+        palya.mxSizeX = getRows(filename); // sorok es oszlopok beállítása a fájl alapján
+        palya.mxSizeY = getCols(filename);
 
         if (palya.mxSizeX == -1 || palya.mxSizeY == -1)
         {
