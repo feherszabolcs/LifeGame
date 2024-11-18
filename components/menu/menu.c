@@ -4,7 +4,6 @@
 #include <conio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <ctype.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
