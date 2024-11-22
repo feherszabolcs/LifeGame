@@ -149,27 +149,30 @@ void showMenu()
 
     while (!validInput((intptr_t)control, false)) // 2. param false, mert nem a jatek vege eseten vagyunk
     {
-        printf("Valasszon a fenti lehetosegek kozul: ");
+        printf("Valasszon a fenti menupontok kozul: ");
         control = readMenu(control);
     }
 
-    switch ((intptr_t)control)
+    while (true)
     {
-    case 1:
-        Creator();
-        break;
-    case 2:
-        dialogopener();
-        break;
-    case 9:
-        printf("*****Kilepes!*****");
-        sleep_ms(1000);
-        exit(0);
-        break;
+        switch ((intptr_t)control)
+        {
+        case 1:
+            Creator();
+            break;
+        case 2:
+            dialogopener();
+            break;
+        case 9:
+            printf("*****Kilepes!*****");
+            sleep_ms(1000);
+            exit(0);
+            break;
 
-    default:
-        printf("Nincs ilyen menupont!\n");
-        showMenu();
+        default:
+            printf("Nincs ilyen menupont!\n");
+            break;
+        }
         break;
     }
 
