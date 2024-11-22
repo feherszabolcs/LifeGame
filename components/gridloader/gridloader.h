@@ -1,5 +1,5 @@
 #ifndef GRIDLOADER_H
 #define GRIDLOADER_H
 
-void dialogopener();
+Palya dialogopener(Palya p);
 #endif

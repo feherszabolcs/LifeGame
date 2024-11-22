@@ -1,6 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-void Run();
+void Run(Palya palya);
 
 #endif

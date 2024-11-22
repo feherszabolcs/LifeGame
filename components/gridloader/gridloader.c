@@ -1,10 +1,10 @@
+#include "../creategrid/create.h"
 #include "gridloader.h"
 #include "../menu/menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../../debugmalloc.h"
-#include "../creategrid/create.h"
 #include "../menu/menu.h"
 
 static int getRows(char filename[])
@@ -34,8 +34,9 @@ static int getCols(char filename[])
     return cols - 2; // = MxSizeY
 }
 
-void dialogopener()
+Palya dialogopener(Palya p)
 {
+    Palya palya = p;
     palya.mxSizeY = palya.mxSizeX = 0;
 
     system("cls");
@@ -61,18 +62,21 @@ void dialogopener()
     if ((intptr_t)input == 1)
     {
         char filename[100];
-        printf("\nAdja meg a fajl nevet [grid.txt]: ");
-        scanf("%s", filename);
-
         FILE *file;
-        file = fopen(filename, "r");
-
-        if (file == NULL)
+        while (true)
         {
-            printf("\nNem sikerult megnyitni a fajlt!\n");
-            sleep_ms(500);
-            dialogopener();
-            return;
+            printf("\nAdja meg a fajl nevet [grid.txt]: ");
+            scanf("%s", filename);
+
+            file = fopen(filename, "r");
+
+            if (file == NULL)
+            {
+                printf("\nNem sikerult megnyitni a fajlt!\n");
+                sleep_ms(500);
+            }
+            else
+                break;
         }
 
         palya.mxSizeX = getRows(filename); // sorok es oszlopok beállítása a fájl alapján
@@ -81,14 +85,13 @@ void dialogopener()
         if (palya.mxSizeX == -1 || palya.mxSizeY == -1)
         {
             printf("Hiba tortent: Nem sikerült beállítani a sor és/vagy oszlopszámot!\n");
-            return;
         }
 
         palya.mx = (char **)calloc(palya.mxSizeX + 2, sizeof(char *));
         for (int i = 0; i < palya.mxSizeX + 2; i++)
             palya.mx[i] = (char *)calloc(palya.mxSizeY + 3, sizeof(char));
 
-        for (int i = 0; i < palya.mxSizeX + 3; i++)
+        for (int i = 0; i < palya.mxSizeX + 2; i++)
         {
             for (int j = 0; j < palya.mxSizeY + 3; j++)
             {
@@ -100,7 +103,7 @@ void dialogopener()
         }
 
         printf("\nA fajl sikeresen betoltotta a jatekteret!\n");
-        MxTest();
+        MxTest(palya);
         fclose(file);
     }
 
@@ -108,6 +111,7 @@ void dialogopener()
     {
         system("cls");
         showMenu();
-        return;
+        return palya;
     }
+    return palya;
 }

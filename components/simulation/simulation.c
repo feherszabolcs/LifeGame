@@ -1,11 +1,11 @@
+#include "../creategrid/create.h"
 #include "simulation.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../debugmalloc.h"
-#include "../creategrid/create.h"
 #include "../menu/menu.h"
 
-int getNeighboursCount(int x, int y)
+int getNeighboursCount(Palya palya, int x, int y)
 {
     int count = 0;
     for (int i = -1; i <= 1; i++)
@@ -21,9 +21,8 @@ int getNeighboursCount(int x, int y)
     return count;
 }
 
-void nexState()
+void nexState(Palya palya)
 {
-
     char **tmpMx = palya.mx; // ideiglenes mx módosítása h a valtozasok csak az adott kör végén hajtódjanak végre valójában
 
     for (int i = 1; i < palya.mxSizeX; i++)
@@ -31,7 +30,7 @@ void nexState()
         for (int j = 1; j < palya.mxSizeY; j++)
         {
             // szomszedok szamanak meghatarazosa
-            int neighbours = getNeighboursCount(i, j);
+            int neighbours = getNeighboursCount(palya, i, j);
 
             char cell = palya.mx[i][j];
             // a sejtes cellák (túléli vagy elpusztul)
@@ -49,11 +48,11 @@ void nexState()
     palya.mx = tmpMx;
 }
 
-void Run()
+void Run(Palya palya)
 {
     system("cls");
-    MxTest();
-    nexState();
+    MxTest(palya);
+    nexState(palya);
     printf("\n\nA jatek befejezesehez nyomjon meg egy billentyut!\n");
     sleep_ms(1000);
 }

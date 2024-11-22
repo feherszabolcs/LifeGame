@@ -9,10 +9,10 @@
 #else
 #include <unistd.h>
 #endif
+#include "../creategrid/create.h"
 #include "../../debugmalloc.h"
 #include "menu.h"
 #include "../gridloader/gridloader.h"
-#include "../creategrid/create.h"
 #include "../simulation/simulation.h"
 
 /**
@@ -56,8 +56,9 @@ int *readMenu(int *control)
     return control;
 }
 
-int saveGrid()
+int saveGrid(Palya p)
 {
+    Palya palya = p;
     FILE *file = fopen("grid.txt", "w");
     if (file == NULL)
     {
@@ -90,8 +91,9 @@ void Quit() // Bezaras es kilepes
     exit(0);
 }
 // A jatek vegen a matrix fajlba mentése vagy kilepo fgv
-void EndGame()
+void EndGame(Palya p)
 {
+    Palya palya = p;
     int *input;
 
     printf("\n********************************");
@@ -110,7 +112,7 @@ void EndGame()
     if ((intptr_t)input == 1) // mentes grid.txt fajlba
     {
         system("cls");
-        int res = saveGrid();
+        int res = saveGrid(palya);
         if (res != 0) //-1-es visszateres - nem sikerult a mentes
             printf("\nNem sikerult a mentes!\n");
         else
@@ -120,6 +122,7 @@ void EndGame()
         }
     }
 
+    //
     for (int i = 0; i < palya.mxSizeX + 2; i++)
     {
         free(palya.mx[i]);
@@ -138,6 +141,7 @@ void EndGame()
 // Addig vár a usertől inputot, amíg az nem 1-es, 2-es vagy 9-es. A lehetséges válaszokat a validInput függvény vizsgálja.
 void showMenu()
 {
+    Palya palya = {0, 0, NULL};
     int *control = 0;
 
     printf("\n********************************");
@@ -158,10 +162,10 @@ void showMenu()
         switch ((intptr_t)control)
         {
         case 1:
-            Creator();
+            palya = Creator(palya);
             break;
         case 2:
-            dialogopener();
+            palya = dialogopener(palya);
             break;
         case 9:
             printf("*****Kilepes!*****");
@@ -179,7 +183,7 @@ void showMenu()
     // kezdodik a jatek ---
     while (!kbhit())
     {
-        Run();
+        Run(palya);
     }
-    EndGame();
+    EndGame(palya);
 }

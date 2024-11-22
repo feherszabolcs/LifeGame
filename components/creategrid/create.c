@@ -7,12 +7,6 @@
 #include <time.h>
 #include <stdbool.h>
 
-Palya palya = {0, 0, NULL};
-
-// int mxSizeX;
-// int mxSizeY;
-// char **mx;
-
 static void Print()
 {
     system("cls");
@@ -25,7 +19,7 @@ static void Print()
 }
 
 // matrix allapot kirajzolo fgv
-void MxTest()
+void MxTest(Palya palya)
 {
     for (int i = 0; i < palya.mxSizeX + 2; i++)
     {
@@ -40,8 +34,9 @@ void MxTest()
     }
 }
 
-void FillMatrix()
+Palya FillMatrix(Palya p)
 {
+    Palya palya = p;
     for (int i = 1; i <= palya.mxSizeX; i++)
     {
         char line[60];
@@ -76,6 +71,7 @@ void FillMatrix()
             palya.mx[i][j] = toupper(line[j - 1]);
         }
     }
+    return palya;
 }
 
 bool validMenu(int input)
@@ -86,8 +82,9 @@ bool validMenu(int input)
         return false;
 }
 
-void Creator()
+Palya Creator(Palya p)
 {
+    Palya palya = p;
     srand(time(NULL));
     Print();
     int *input = 0;
@@ -125,7 +122,7 @@ void Creator()
     // user altal bevitt adatbol generalas
     if ((intptr_t)input == 1)
     {
-        FillMatrix();
+        palya = FillMatrix(palya);
     }
     // jatekter random generalasa
     if ((intptr_t)input == 2)
@@ -144,6 +141,7 @@ void Creator()
         // vissza a menube
         system("cls");
         showMenu();
-        return;
+        return palya;
     }
+    return palya;
 }
