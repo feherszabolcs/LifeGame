@@ -74,21 +74,13 @@ Palya FillMatrix(Palya p)
     return palya;
 }
 
-bool validMenu(int input)
-{
-    if (input == 1 || input == 2 || input == 9)
-        return true;
-    else
-        return false;
-}
-
 Palya Creator(Palya p)
 {
     Palya palya = p;
     srand(time(NULL));
     Print();
     int *input = 0;
-    while (!validMenu((intptr_t)input))
+    while (!validInput((intptr_t)input, false)) // 1, 2 ,9
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         input = readMenu(input);

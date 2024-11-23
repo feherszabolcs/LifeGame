@@ -29,7 +29,7 @@ void sleep_ms(int milliseconds)
 
 // Csak a 1, 2, 9-es számokat fogadja el a függvény, ezek esetén lesz valid az input.
 // a vizsgálandó számot paraméterként kapja meg.
-static bool validInput(int c, bool end)
+bool validInput(int c, bool end)
 {
     if (end)
     {
