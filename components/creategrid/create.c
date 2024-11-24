@@ -79,14 +79,14 @@ Palya Creator(Palya p)
     Palya palya = p;
     srand(time(NULL));
     Print();
-    int *input = 0;
-    while (!validInput((intptr_t)input, false)) // 1, 2 ,9
+    int input = 0;
+    while (!validInput(input, false)) // 1, 2 ,9
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         input = readMenu(input);
     }
 
-    if ((intptr_t)input == 1 || (intptr_t)input == 2)
+    if (input == 1 || input == 2)
     {
 
         while (palya.mxSizeX < 1 || palya.mxSizeY < 1)
@@ -112,12 +112,12 @@ Palya Creator(Palya p)
         sleep_ms(1000);
     }
     // user altal bevitt adatbol generalas
-    if ((intptr_t)input == 1)
+    if (input == 1)
     {
         palya = FillMatrix(palya);
     }
     // jatekter random generalasa
-    if ((intptr_t)input == 2)
+    if (input == 2)
     {
         for (int i = 1; i <= palya.mxSizeX; i++)
         {
@@ -128,11 +128,10 @@ Palya Creator(Palya p)
             }
         }
     }
-    if ((intptr_t)input == 9)
+    if (input == 9)
     {
         // vissza a menube
         system("cls");
-        showMenu();
         return palya;
     }
     return palya;

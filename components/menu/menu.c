@@ -1,8 +1,8 @@
-
+#include "menu.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-#include <stdbool.h>
 #include <string.h>
 #ifdef _WIN32
 #include <windows.h>
@@ -11,7 +11,6 @@
 #endif
 #include "../creategrid/create.h"
 #include "../../debugmalloc.h"
-#include "menu.h"
 #include "../gridloader/gridloader.h"
 #include "../simulation/simulation.h"
 
@@ -44,7 +43,7 @@ bool validInput(int c, bool end)
 // a konzolról beolvasott adatot ellenőrzi, hogy szám-e.
 // ha nem szám akkor a fgv újrakéri a felhasználótól a bemenetet.
 // int pointerrel tér vissza, ami a beolvasott szám
-int *readMenu(int *control)
+int readMenu(int control)
 {
     while (scanf("%d", &control) != 1)
     {
@@ -54,33 +53,6 @@ int *readMenu(int *control)
             ;
     }
     return control;
-}
-
-int saveGrid(Palya p)
-{
-    Palya palya = p;
-    FILE *file = fopen("grid.txt", "w");
-    if (file == NULL)
-    {
-        return -1;
-    }
-    for (int i = 0; i <= palya.mxSizeX + 1; i++)
-    {
-        for (int j = 0; j <= palya.mxSizeY + 1; j++)
-        {
-            if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
-            {
-                fprintf(file, "*"); // A keret kirajzolása
-            }
-            else
-            {
-                fprintf(file, "%c", palya.mx[i][j]);
-            }
-        }
-        fprintf(file, "\n");
-    }
-    fclose(file);
-    return 0;
 }
 
 void Quit() // Bezaras es kilepes
@@ -94,7 +66,7 @@ void Quit() // Bezaras es kilepes
 void EndGame(Palya p)
 {
     Palya palya = p;
-    int *input;
+    int input;
 
     printf("\n********************************");
     printf("\n*         Jatek vege           *");
@@ -103,13 +75,13 @@ void EndGame(Palya p)
     printf("\n*         9. Kilepes           *");
     printf("\n********************************\n\n");
 
-    while (!validInput((intptr_t)input, true)) // true -> csak 1, 8 vagy 9-es számokat fogad el
+    while (!validInput(input, true)) // true -> csak 1, 8 vagy 9-es számokat fogad el
     {
         printf("Valasszon a fenti lehetosegek kozul: ");
         input = readMenu(input);
     }
 
-    if ((intptr_t)input == 1) // mentes grid.txt fajlba
+    if (input == 1) // mentes grid.txt fajlba
     {
         system("cls");
         int res = saveGrid(palya);
@@ -130,7 +102,7 @@ void EndGame(Palya p)
     free(palya.mx);
     palya.mxSizeY = palya.mxSizeX = 0; // felszabaditas es alaphelyzet
 
-    if ((intptr_t)input == 9)
+    if (input == 9)
         Quit();
     system("cls");
     showMenu();
@@ -142,24 +114,22 @@ void EndGame(Palya p)
 void showMenu()
 {
     Palya palya = {0, 0, NULL};
-    int *control = 0;
-
-    printf("\n********************************");
-    printf("\n*         Eletjatek            *");
-    printf("\n*  1. Uj jatekter letrehozasa  *");
-    printf("\n*  2. Jatekallas betoltese     *");
-    printf("\n*  9. Kilepes                  *");
-    printf("\n********************************\n\n");
-
-    while (!validInput((intptr_t)control, false)) // 2. param false, mert nem a jatek vege eseten vagyunk
-    {
-        printf("Valasszon a fenti menupontok kozul: ");
-        control = readMenu(control);
-    }
+    int control = 0;
 
     while (true)
     {
-        switch ((intptr_t)control)
+        printf("\n********************************");
+        printf("\n*         Eletjatek            *");
+        printf("\n*  1. Uj jatekter letrehozasa  *");
+        printf("\n*  2. Jatekallas betoltese     *");
+        printf("\n*  9. Kilepes                  *");
+        printf("\n********************************\n\n");
+        while (!validInput(control, false)) // 2. param false, mert nem a jatek vege eseten vagyunk
+        {
+            printf("Valasszon a fenti menupontok kozul: ");
+            control = readMenu(control);
+        }
+        switch (control)
         {
         case 1:
             palya = Creator(palya);
@@ -177,7 +147,13 @@ void showMenu()
             printf("Nincs ilyen menupont!\n");
             break;
         }
-        break;
+        if (control == 1 && palya.mxSizeY != 0 && palya.mxSizeX != 0)
+            break;
+        if (control == 2 && palya.mxSizeY != 0 && palya.mxSizeX != 0)
+            break;
+        if (control == 9)
+            break;
+        control = 0;
     }
 
     // kezdodik a jatek ---

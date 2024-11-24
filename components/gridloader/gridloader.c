@@ -7,31 +7,59 @@
 #include "../../debugmalloc.h"
 #include "../menu/menu.h"
 
-static int getRows(char filename[])
+typedef struct FileSize
 {
-    int rows = 0;
+    int rows;
+    int cols;
+} FileSize;
+
+static FileSize getSize(char filename[])
+{
+    FileSize fs = {1, 0};
+
     FILE *fp = fopen(filename, "r");
     if (fp == NULL)
-        return -1;
-    char buffer[100] = {'\0'};
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) // ciklusfeltetel otlete: stackoverflow
     {
-        rows++;
+        fs.cols = fs.cols = -1;
+        return fs;
     }
-    return rows - 2; // = MxSizeX
+
+    char c;
+    for (fs.cols = 0; getc(fp) != '\n'; fs.cols++)
+        ;
+    for (c = fgetc(fp); c != EOF; c = fgetc(fp))
+        if (c == '\n')
+            fs.rows++;
+
+    fclose(fp);
+    return fs;
 }
-static int getCols(char filename[])
+
+int saveGrid(Palya p)
 {
-    int cols = 0;
-    FILE *fp = fopen(filename, "r");
-    if (fp == NULL)
-        return -1;
-    char buffer[100] = {'\0'};
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) // Kod otlete: stackoverflow
+    Palya palya = p;
+    FILE *file = fopen("grid.txt", "w");
+    if (file == NULL)
     {
-        cols = strlen(buffer) - 1;
+        return -1;
     }
-    return cols - 2; // = MxSizeY
+    for (int i = 0; i <= palya.mxSizeX + 1; i++)
+    {
+        for (int j = 0; j <= palya.mxSizeY + 1; j++)
+        {
+            if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
+            {
+                fprintf(file, "*"); // A keret kirajzolása
+            }
+            else
+            {
+                fprintf(file, "%c", palya.mx[i][j]);
+            }
+        }
+        fprintf(file, "\n");
+    }
+    fclose(file);
+    return 0;
 }
 
 Palya dialogopener(Palya p)
@@ -52,14 +80,14 @@ Palya dialogopener(Palya p)
     printf("\n*         8 - Vissza            *");
     printf("\n*********************************\n");
 
-    int *input = 0;
+    int input = 0;
 
-    while ((intptr_t)input != 1 && (intptr_t)input != 8)
+    while (input != 1 && input != 8)
     {
         input = readMenu(input);
     }
 
-    if ((intptr_t)input == 1)
+    if (input == 1)
     {
         char filename[100];
         FILE *file;
@@ -79,8 +107,9 @@ Palya dialogopener(Palya p)
                 break;
         }
 
-        palya.mxSizeX = getRows(filename); // sorok es oszlopok beállítása a fájl alapján
-        palya.mxSizeY = getCols(filename);
+        FileSize fs = getSize(filename);
+        palya.mxSizeX = fs.rows - 2; // keretek levonasa
+        palya.mxSizeY = fs.cols - 2;
 
         if (palya.mxSizeX == -1 || palya.mxSizeY == -1)
         {
@@ -107,10 +136,9 @@ Palya dialogopener(Palya p)
         fclose(file);
     }
 
-    if ((intptr_t)input == 8)
+    if (input == 8)
     {
         system("cls");
-        showMenu();
         return palya;
     }
     return palya;
