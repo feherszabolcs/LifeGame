@@ -29,19 +29,19 @@ void MxTest(Palya palya)
             if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
             {
                 econio_textcolor(COL_RED);
-                printf("*"); // A keret kirajzolása
+                printf("* "); // A keret kirajzolása
                 econio_textcolor(COL_WHITE);
             }
             else
             {
                 if (palya.mx[i][j] == '_')
                 {
-                    printf(" ");
+                    printf("  ");
                 }
                 if (palya.mx[i][j] == 'X')
                 {
                     econio_textcolor(COL_GREEN);
-                    printf("%c", palya.mx[i][j]);
+                    printf("%c ", palya.mx[i][j]);
                     econio_textcolor(COL_WHITE);
                 }
             }
