@@ -6,6 +6,7 @@
 #include "../../debugmalloc.h"
 #include <time.h>
 #include <stdbool.h>
+#include "../../econio.h"
 
 static void Print()
 {
@@ -26,9 +27,24 @@ void MxTest(Palya palya)
         for (int j = 0; j < palya.mxSizeY + 2; j++)
         {
             if (i == 0 || j == 0 || i == palya.mxSizeX + 1 || j == palya.mxSizeY + 1)
+            {
+                econio_textcolor(COL_RED);
                 printf("*"); // A keret kirajzolása
+                econio_textcolor(COL_WHITE);
+            }
             else
-                printf("%c", palya.mx[i][j]);
+            {
+                if (palya.mx[i][j] == '_')
+                {
+                    printf(" ");
+                }
+                if (palya.mx[i][j] == 'X')
+                {
+                    econio_textcolor(COL_GREEN);
+                    printf("%c", palya.mx[i][j]);
+                    econio_textcolor(COL_WHITE);
+                }
+            }
         }
         printf("\n");
     }
