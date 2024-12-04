@@ -63,7 +63,7 @@ void Quit() // Bezaras es kilepes
     exit(0);
 }
 // A jatek vegen a matrix fajlba mentése vagy kilepo fgv
-void EndGame(Palya p)
+int EndGame(Palya p)
 {
     Palya palya = p;
     int input;
@@ -105,8 +105,7 @@ void EndGame(Palya p)
     if (input == 9)
         Quit();
     system("cls");
-    showMenu();
-    return;
+    return input;
 }
 
 // A fuggveny felel a menupontok megjelenitesere, ez amit a főprogram is meghív
@@ -147,19 +146,17 @@ void showMenu()
             printf("Nincs ilyen menupont!\n");
             break;
         }
-        if (control == 1 && palya.mxSizeY != 0 && palya.mxSizeX != 0)
-            break;
-        if (control == 2 && palya.mxSizeY != 0 && palya.mxSizeX != 0)
-            break;
+        if ((control == 2 || control == 1) && palya.mxSizeY != 0 && palya.mxSizeX != 0)
+        {
+            while (!kbhit())
+            {
+                Run(palya);
+            }
+            if (EndGame(palya) == 9)
+                break;
+        }
         if (control == 9)
             break;
         control = 0;
     }
-
-    // kezdodik a jatek ---
-    while (!kbhit())
-    {
-        Run(palya);
-    }
-    EndGame(palya);
 }

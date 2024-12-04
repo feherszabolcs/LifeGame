@@ -12,9 +12,7 @@ int getNeighboursCount(Palya palya, int x, int y)
     {
         for (int j = -1; j <= 1; j++)
         {
-            if (j == 0 && i == 0)
-                continue;
-            if (palya.mx[x + i][y + j] == 'X')
+            if ((j != 0 || i != 0) && palya.mx[x + i][y + j] == 'X')
                 count++;
         }
     }
@@ -23,8 +21,15 @@ int getNeighboursCount(Palya palya, int x, int y)
 
 void nexState(Palya palya)
 {
-    char **tmpMx = palya.mx; // ideiglenes mx módosítása h a valtozasok csak az adott kör végén hajtódjanak végre valójában
-
+    char **tmpMx = (char **)malloc(palya.mxSizeX * sizeof(char *));
+    for (int i = 0; i < palya.mxSizeX; i++)
+    {
+        tmpMx[i] = (char *)malloc(palya.mxSizeY * sizeof(char));
+        for (int j = 0; j < palya.mxSizeY; j++)
+        {
+            tmpMx[i][j] = palya.mx[i][j];
+        }
+    }
     for (int i = 1; i < palya.mxSizeX; i++)
     {
         for (int j = 1; j < palya.mxSizeY; j++)
@@ -45,7 +50,15 @@ void nexState(Palya palya)
                 tmpMx[i][j] = 'X';
         }
     }
-    palya.mx = tmpMx;
+    for (int i = 0; i < palya.mxSizeX; i++)
+    {
+        for (int j = 0; j < palya.mxSizeY; j++)
+        {
+            palya.mx[i][j] = tmpMx[i][j];
+        }
+        free(tmpMx[i]);
+    }
+    free(tmpMx);
 }
 
 void Run(Palya palya)

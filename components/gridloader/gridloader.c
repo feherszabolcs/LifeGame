@@ -132,7 +132,7 @@ Palya dialogopener(Palya p)
         }
 
         printf("\nA fajl sikeresen betoltotta a jatekteret!\n");
-        MxTest(palya);
+        // MxTest(palya);
         fclose(file);
     }
 
